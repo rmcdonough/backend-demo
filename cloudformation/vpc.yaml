@@ -271,6 +271,10 @@ Resources:
           FromPort: -1
           ToPort: -1
           CidrIp: 10.0.0.0/8
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId: !Ref JumpSG
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0

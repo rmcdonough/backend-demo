@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9c12c242-3096-43d7-a0c8-920cf4ac325d" name="Default Changelist" comment="" />
+    <list default="true" id="9c12c242-3096-43d7-a0c8-920cf4ac325d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/cloudformation/vpc.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cloudformation/vpc.yaml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,14 +12,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python-app-1/app.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+              <caret line="17" selection-start-line="17" selection-end-line="17" />
               <folding>
                 <element signature="e#139#153#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cloudformation/vpc.yaml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="484">
+              <caret line="276" column="31" selection-start-line="276" selection-start-column="31" selection-end-line="276" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -39,6 +50,7 @@
         <option value="$PROJECT_DIR$/python-app-1/Dockerfile" />
         <option value="$PROJECT_DIR$/python-app-2/Dockerfile" />
         <option value="$PROJECT_DIR$/python-app-3/Dockerfile" />
+        <option value="$PROJECT_DIR$/cloudformation/vpc.yaml" />
       </list>
     </option>
   </component>
@@ -60,6 +72,16 @@
             <path>
               <item name="backend-demo" type="b2602c69:ProjectViewProjectNode" />
               <item name="backend-demo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="backend-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="backend-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="cloudformation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="backend-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="backend-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="prod" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="backend-demo" type="b2602c69:ProjectViewProjectNode" />
@@ -103,12 +125,12 @@
       <option name="presentableId" value="Default" />
       <updated>1557097468990</updated>
       <workItem from="1557097470510" duration="97000" />
-      <workItem from="1557097652382" duration="4106000" />
+      <workItem from="1557097652382" duration="4601000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4203000" />
+    <option name="totallyTimeSpent" value="4698000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="111" y="22" width="1416" height="1028" extended-state="0" />
@@ -187,10 +209,17 @@
     <entry file="file://$PROJECT_DIR$/python-app-1/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
           <folding>
             <element signature="e#139#153#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cloudformation/vpc.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="276" column="31" selection-start-line="276" selection-start-column="31" selection-end-line="276" selection-end-column="31" />
         </state>
       </provider>
     </entry>
