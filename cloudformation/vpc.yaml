@@ -77,45 +77,23 @@ Resources:
         - Key: Name
           Value: ENB-DEVOPS-Pilot-Private1A
 
-#  Private2A:
-#    Type: AWS::EC2::Subnet
-#    Properties:
-#      AvailabilityZone: us-west-2a
-#      VpcId: !Ref VPC
-#      CidrBlock: 10.200.11.0/24
-#      MapPublicIpOnLaunch: false
-#      Tags:
-#        - Key: Name
-#          Value: ENB-DEVOPS-Pilot-Private2A
-
   Private1B:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-west-2a
+      AvailabilityZone: us-west-2b
       VpcId: !Ref VPC
-      CidrBlock: 10.200.20.0/24
+      CidrBlock: 10.200.120.0/24
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
           Value: ENB-DEVOPS-Pilot-Private1B
 
-#  Private2B:
-#    Type: AWS::EC2::Subnet
-#    Properties:
-#      AvailabilityZone: us-west-2a
-#      VpcId: !Ref VPC
-#      CidrBlock: 10.200.21.0/24
-#      MapPublicIpOnLaunch: false
-#      Tags:
-#        - Key: Name
-#          Value: ENB-DEVOPS-Pilot-Private2B
-
   Private1C:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-west-2a
+      AvailabilityZone: us-west-2c
       VpcId: !Ref VPC
-      CidrBlock: 10.200.30.0/24
+      CidrBlock: 10.200.130.0/24
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
@@ -254,11 +232,29 @@ Resources:
       RouteTableId: !Ref RouteTable
       SubnetId: !Ref Public1B
 
-  PublicBARouteTableAssociation:
+  PublicCARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref RouteTable
       SubnetId: !Ref Public1C
+
+  Private1ARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref NATRouteTable1A
+      SubnetId: !Ref Private1A
+
+  PrivateBARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref NATRouteTable1B
+      SubnetId: !Ref Private1B
+
+  PrivateCARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref NATRouteTable1C
+      SubnetId: !Ref Private1C
 
   AllInstancesSG:
     Type: AWS::EC2::SecurityGroup
@@ -299,3 +295,53 @@ Resources:
       Tags:
         - Key: Name
           Value: Jump servers
+
+  JenkinsSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: Jenkins instances
+      GroupDescription: Jenkins servers
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          SourceSecurityGroupId: !Ref JumpSG
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: Jenkins instances
+
+  EKSNodesSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: EKS nodes
+      GroupDescription: EKS nodes
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: 0
+          ToPort: 0
+          CidrIp: 10.0.0.0/8
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: EKS service
+
+  EKSCluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: DevOpsDemo
+      Version: '1.12'
+      RoleArn: arn:aws:iam::917550314955:role/DevOpsDemoEKSServiceRole
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          - !Ref EKSNodesSG
+        SubnetIds:
+          - !Ref Private1A
+          - !Ref Private1B
+          - !Ref Private1C
