@@ -1,0 +1,297 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+
+Outputs:
+  StackVPC:
+    Description: VPC created by the ENB Pilot stack
+    Value: !Ref VPC
+    Export:
+      Name: !Sub "${AWS::StackName}-VPCID"
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.200.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: ENB Pilot
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: ENB Pilot
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  Public1A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-west-2a
+      VpcId: !Ref VPC
+      CidrBlock: 10.200.0.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot-Public1A
+
+  Public1B:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-west-2b
+      VpcId: !Ref VPC
+      CidrBlock: 10.200.1.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot-Public1B
+
+  Public1C:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-west-2c
+      VpcId: !Ref VPC
+      CidrBlock: 10.200.2.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot-Public1C
+
+  Private1A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-west-2a
+      VpcId: !Ref VPC
+      CidrBlock: 10.200.10.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot-Private1A
+
+#  Private2A:
+#    Type: AWS::EC2::Subnet
+#    Properties:
+#      AvailabilityZone: us-west-2a
+#      VpcId: !Ref VPC
+#      CidrBlock: 10.200.11.0/24
+#      MapPublicIpOnLaunch: false
+#      Tags:
+#        - Key: Name
+#          Value: ENB-DEVOPS-Pilot-Private2A
+
+  Private1B:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-west-2a
+      VpcId: !Ref VPC
+      CidrBlock: 10.200.20.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot-Private1B
+
+#  Private2B:
+#    Type: AWS::EC2::Subnet
+#    Properties:
+#      AvailabilityZone: us-west-2a
+#      VpcId: !Ref VPC
+#      CidrBlock: 10.200.21.0/24
+#      MapPublicIpOnLaunch: false
+#      Tags:
+#        - Key: Name
+#          Value: ENB-DEVOPS-Pilot-Private2B
+
+  Private1C:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-west-2a
+      VpcId: !Ref VPC
+      CidrBlock: 10.200.30.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot-Private1C
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot public route table
+
+  NATRouteTable1A:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot NATed route table 1A
+
+  NATRouteTable1B:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot NATed route table 1B
+
+  NATRouteTable1C:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot NATed route table 1C
+
+  EIP1A:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  EIP1B:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  EIP1C:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  NAT1A:
+    DependsOn: VPCGatewayAttachment
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - EIP1A
+          - AllocationId
+      SubnetId:
+        Ref: Public1A
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot NAT Gateway 1A
+
+  NAT1B:
+    DependsOn: VPCGatewayAttachment
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - EIP1B
+          - AllocationId
+      SubnetId:
+        Ref: Public1B
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot NAT Gateway 1B
+
+  NAT1C:
+    DependsOn: VPCGatewayAttachment
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - EIP1C
+          - AllocationId
+      SubnetId:
+        Ref: Public1C
+      Tags:
+        - Key: Name
+          Value: ENB-DEVOPS-Pilot NAT Gateway 1C
+
+  InternetRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref RouteTable
+
+  NATRoute1A:
+    Type: AWS::EC2::Route
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NAT1A
+      RouteTableId: !Ref NATRouteTable1A
+
+  NATRoute1B:
+    Type: AWS::EC2::Route
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NAT1B
+      RouteTableId: !Ref NATRouteTable1B
+
+  NATRoute1C:
+    Type: AWS::EC2::Route
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NAT1C
+      RouteTableId: !Ref NATRouteTable1C
+
+  Public1ARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId: !Ref Public1A
+
+  PublicBARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId: !Ref Public1B
+
+  PublicBARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId: !Ref Public1C
+
+  AllInstancesSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: All instances
+      GroupDescription: Common SG applied to all instances in the environment
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 10.0.0.0/8
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: All instances
+
+  JumpSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: Jump servers
+      GroupDescription: SSH (jump) servers
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: Jump servers
