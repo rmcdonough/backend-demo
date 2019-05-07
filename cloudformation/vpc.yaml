@@ -325,12 +325,34 @@ Resources:
           FromPort: 0
           ToPort: 0
           CidrIp: 10.0.0.0/8
+        - IpProtocol: tcp
+          FromPort: 30100
+          ToPort: 30200
+          CidrIp: 10.0.0.0/8
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
           Value: EKS service
+
+  RedisSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: Redis nodes
+      GroupDescription: Redis nodes
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 6379
+          ToPort: 6379
+          CidrIp: 10.0.0.0/8
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: Redis service
 
   EKSCluster:
     Type: AWS::EKS::Cluster

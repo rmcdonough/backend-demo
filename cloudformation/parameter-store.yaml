@@ -1,0 +1,43 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  DevOpsDemoMySQLUser:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "DevOpsDemoMySQLUser"
+      Type: "String"
+      Value: "DevOpsDemo"
+      Description: "User for accessing Aurora"
+
+  DevOpsDemoMySQLPassword:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "DevOpsDemoMySQLPassword"
+      Type: "String"
+      Value: "DevOpsDemo"
+      Description: "Password for accessing Aurora"
+
+  DevOpsDemoMySQLDB:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "DevOpsDemoMySQLDB"
+      Type: "String"
+      Value: "DevOpsDemo"
+      Description: "Aurora DB name"
+
+  DevOpsDemoMySQLHost:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "DevOpsDemoMySQLHost"
+      Type: "String"
+      Value: "devopsdemo.cc7zt5cny8v8.us-west-2.rds.amazonaws.com"
+      Description: "Aurora DB host"
+
+  DevOpsDemoRedisHost:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "DevOpsDemoRedisHost"
+      Type: "String"
+      Value: "devopsdemo.slsglm.0001.usw2.cache.amazonaws.com"
+      Description: "Hostname for Redis"

@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::917550314955:role/ENBDevOpsEKSNodes-NodeInstanceRole-T0QDQB8ZI78L
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+    - rolearn: arn:aws:iam::917550314955:role/ENBDevOpsEKSNodesSpot-NodeInstanceRole-WZS9UZK7O4NE
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+    - rolearn: arn:aws:iam::917550314955:role/DevOpsDemoJenkinsRole
+      groups:
+        - system:masters
